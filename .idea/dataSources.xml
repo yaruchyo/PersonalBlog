@@ -13,12 +13,17 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="testdb.db" uuid="9fb5efec-f97d-48ab-b826-dff691d8fd0c">
+    <data-source source="LOCAL" name="testdb" uuid="701cb0d8-efa8-4fcd-9958-ae7f63d918dd">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:identifier.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/flaskblog/testdb.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/sqlite-jdbc-3.25.1.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>
