@@ -22,6 +22,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
+
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///testdb.db'
     ADMIN_HASH_PASS = '$2b$12$stne02QJ1pXkghj7UsV95.qkkjk.ICXo8rbGonUSePOwF7PaA8Hmu'

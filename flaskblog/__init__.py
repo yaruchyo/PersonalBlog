@@ -18,13 +18,14 @@ mail = Mail()
 def create_app(config_class=DevelopmentConfig):
 
     app = Flask(__name__)
+
     if app.config['ENV'] == 'development':
         config_class = DevelopmentConfig
     elif app.config['ENV'] == 'production':
         config_class = ProductionConfig
 
     app.config.from_object(config_class)
-
+    app.static_folder = 'static'
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
