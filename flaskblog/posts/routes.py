@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from flaskblog import db
 from flaskblog.models import Post, Images
 from flaskblog.posts.forms import PostForm, PostUpdateForm, UploadPostImagesForm
-from flaskblog.users.utils import save_blog_picture
+from flaskblog.users.utils import save_blog_picture, delete_picture
 
 posts = Blueprint('posts', __name__)
 
@@ -62,6 +62,7 @@ def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
+    delete_picture('static/post_pics', post.image_file)
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
@@ -84,5 +85,5 @@ def upload_images():
             image = Images(image_file=picture_file)
             db.session.add(image)
         db.session.commit()
-        return redirect(url_for('main.home'))
+        return redirect(url_for('posts.upload_images'))
     return render_template('upload_images.html', form=form, images=images)

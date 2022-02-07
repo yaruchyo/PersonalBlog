@@ -9,6 +9,9 @@ main = Blueprint('main', __name__)
 def home():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=20)
+
+    if not posts.items:
+        return render_template('errors/create_admin.html')
     return render_template('home.html', posts=posts, home_page=True)
 
 

@@ -1,44 +1,47 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                <div class="form-group">
-                    {{ form.email.label(class="form-control-label") }}
-                    {% if form.email.errors %}
-                        {{ form.email(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.email(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.password.label(class="form-control-label") }}
-                    {% if form.password.errors %}
-                        {{ form.password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.password(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-check">
-                    {{ form.remember(class="form-check-input") }}
-                    {{ form.remember.label(class="form-check-label") }}
-                </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
-            </div>
-        </form>
-    </div>
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+            <div id="comments" class="row">
+                <div class="col-full">
+                    <div class="respond">
+                        <h3 class="h2"> {{ form.hidden_tag() }}</h3>
+                        <form method="POST" action="">
+                            {{ form.hidden_tag() }}
+                            <fieldset class="form-group">
+                                <div class="form-field">
+                                        {% if form.username.errors %}
+                                            {{ form.username(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.username.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.username(class="full-width") }}
+                                        {% endif %}
+                                </div>
+                                <div class="form-field">
+                                        {% if form.password.errors %}
+                                            {{ form.password(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.password.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.password(class="full-width") }}
+                                        {% endif %}
+                                </div>
+                                <div class="s-footer__copyright" bis_skin_checked="1">
+                                    <span>{{ form.remember(class="form-check-input", style="margin:0;padding:0") }}</span>
+                                    <span>Remember me</span>
+                                </div>
+
+                            </fieldset>
+                            <button type="submit" class="submit btn--primary btn--large full-width">Submit</button>
+                        </form> <!-- end form -->
+                    </div> <!-- end respond -->
+                </div> <!-- end col-full -->
+            </div> <!-- end row comments -->
+    </section> <!-- s-content -->
 {% endblock content %}

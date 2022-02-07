@@ -7,11 +7,14 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-
         <!-- mobile specific metas
         ================================================== -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+        <!-- favicons
+        ================================================== -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <!-- CSS
         ================================================== -->
 
@@ -26,15 +29,12 @@
         <script src="{{ url_for('static', filename='js/modernizr.js') }}"></script>
         <script src="{{ url_for('static', filename='js/pace.min.js') }}"></script>
 
-        <!-- favicons
-        ================================================== -->
-        <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
 
         {% if title %}
-            <title>Flask Blog - {{ title }} - {{home_page}}</title>
+            <title>{{ title }}</title>
         {% else %}
-            <title>Flask Blog</title>
+            <title>Yaruchyk Blog</title>
         {% endif %}
     </head>
 
@@ -55,7 +55,7 @@
                 <div class="header__logo">
                     <a class="logo" href="{{url_for('main.home')}}">
 
-                        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Homepage">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Homepage">
                     </a>
                 </div> <!-- end header__logo -->
 
@@ -68,9 +68,6 @@
                     </li>
                     <li>
                         <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                    </li>
-                    <li>
-                        <a href="#0"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                     </li>
                 </ul> <!-- end header__social -->
 
@@ -88,9 +85,6 @@
                             <li><a href="{{ url_for('users.logout')}}">Logout</a></li>
                         {% else %}
                             <li class="current"><a href="{{ url_for('main.home')}}" >Home</a></li>
-                            <li><a href="/#" title="">Contact</a></li>
-                            <li><a href="{{ url_for('users.admin') }}">LoginAdmin</a></li>
-                            <li><a href="/#" title="">Home</a></li>
                         {% endif %}
                     </ul> <!-- end header__nav -->
                     <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Close</a>
@@ -102,10 +96,18 @@
             {% endblock %}
 
         </section> <!-- end s-pageheader -->
+
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
+                    <section class="s-content s-content--narrow s-content--no-padding-bottom">
+
+        <article class="row format-standard">
+            <div class="s-content__header col-full">
                   {{ message }}
+            </div>
+            <article>
+                         </section>
               {% endfor %}
             {% endif %}
         {% endwith %}
@@ -115,19 +117,17 @@
         {% endblock %}
 
 
-        <footer class="s-footer">
+    <footer class="s-footer">
 
         <div class="s-footer__main">
             <div class="row">
 
-                <div class="col-two md-four mob-full s-footer__sitelinks">
+                <div class="col-two md-two mob-full s-footer__sitelinks">
 
-                    <h4>Quick Links</h4>
+                    <h4>Links</h4>
 
                     <ul class="s-footer__linklist">
                         <li><a href="{{ url_for('main.home')}}">Home</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">About</a></li>
                     </ul>
 
                 </div> <!-- end s-footer__sitelinks -->
@@ -145,44 +145,24 @@
 
                 </div> <!-- end s-footer__social -->
 
-                <div class="col-five md-full end s-footer__subscribe">
-
-                    <h4>Our Newsletter</h4>
-
-                    <p>Sit vel delectus amet officiis repudiandae est voluptatem. Tempora maxime provident nisi et fuga et enim exercitationem ipsam. Culpa consequatur occaecati.</p>
-
-                    <div class="subscribe-form">
-                        <form id="mc-form" class="group" novalidate="true">
-
-                            <input type="email" value="" name="EMAIL" class="email" id="mc-email" placeholder="Email Address" required="">
-
-                            <input type="submit" name="subscribe" value="Send">
-
-                            <label for="mc-email" class="subscribe-message"></label>
-
-                        </form>
-                    </div>
-
-                </div> <!-- end s-footer__subscribe -->
-
             </div>
         </div> <!-- end s-footer__main -->
 
-        <div class="s-footer__bottom">
-            <div class="row">
-                <div class="col-full">
-                    <div class="s-footer__copyright">
-                        <span>© Copyright Oleg Yaruchyk 2022</span>
-                    </div>
+            <div class="s-footer__bottom">
+                <div class="row">
+                    <div class="col-full">
+                        <div class="s-footer__copyright">
+                            <span>© Copyright 2022</span>
+                        </div>
 
-                    <div class="go-top">
-                        <a class="smoothscroll" title="Back to Top" href="#top"></a>
+                        <div class="go-top">
+                            <a class="smoothscroll" title="Back to Top" href="#top"></a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div> <!-- end s-footer__bottom -->
+            </div> <!-- end s-footer__bottom -->
 
-    </footer> <!-- end s-footer -->
+        </footer> <!-- end s-footer -->
 
 
         <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>

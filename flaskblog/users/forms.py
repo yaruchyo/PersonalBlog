@@ -28,8 +28,8 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = EmailField('Email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()], render_kw={"placeholder": "Uername"})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Password"})
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
@@ -38,6 +38,8 @@ class UpdateAccountForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = EmailField('Email', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[])
+    confirm_password = PasswordField('Confirm Password', validators=[EqualTo('password')])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 

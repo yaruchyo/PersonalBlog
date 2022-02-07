@@ -1,7 +1,5 @@
 import os
 
-
-
 class Config(object):
     DEBUG = False
     TESTING = False
@@ -13,8 +11,6 @@ class Config(object):
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = 'yaruchyk.o@gmail.com'
-    MAIL_PASSWORD = 'Roma2009'
 
 
 class ProductionConfig(Config):
@@ -24,7 +20,6 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
 
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///testdb.db'
-    ADMIN_HASH_PASS = '$2b$12$stne02QJ1pXkghj7UsV95.qkkjk.ICXo8rbGonUSePOwF7PaA8Hmu'
+
 
 

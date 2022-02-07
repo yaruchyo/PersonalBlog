@@ -1,13 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-<section class="s-content s-content--narrow s-content--no-padding-bottom">
 
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
         <div id="comments" class="row">
             <div class="col-full">
                 <div class="respond">
                     <h3 class="h2">{{legend}}</h3>
                     <form method="POST" action="" enctype="multipart/form-data">
-
                         {{ form.hidden_tag() }}
                         <fieldset>
 
@@ -59,9 +58,8 @@
 
                         </fieldset>
                         <div class="form-group">
-                            {{ form.submit(class="btn btn-outline-info") }}
+                            {{ form.submit(class="submit btn--primary btn--large full-width") }}
                         </div>
-
                     </form>
                 </div>
             </div>

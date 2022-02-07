@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt
 from flaskblog.models import User, Post
 from flaskblog.users.forms import (LoginForm, UpdateAccountForm)
-from flaskblog.users.utils import save_profile_picture
+from flaskblog.users.utils import save_profile_picture, delete_picture
 
 users = Blueprint('users', __name__)
 
@@ -14,7 +14,7 @@ def admin():
         return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
@@ -36,8 +36,12 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
+            delete_picture('static/profile_pics', current_user.image_file)
             picture_file = save_profile_picture(form.picture.data)
             current_user.image_file = picture_file
+        if form.password.data:
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            current_user.password = hashed_password
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
