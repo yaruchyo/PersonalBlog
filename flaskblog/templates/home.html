@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
     {% block home_baners%}
-        <div class="pageheader-content row">
+        {%if posts.page == 1%}
+            <div class="pageheader-content row">
             <div class="col-full">
 
                 <div class="featured">.
@@ -20,7 +21,6 @@
                                     <div class="entry" style="background-image:url({{ url_for('static', filename='post_pics/' + posts.items[k].image_file)}});">
                                         <div class="entry__content">
 <!--                                            <span class="entry__category"><a href="{{ url_for('posts.post', post_id=posts.items[k].id) }}">Music</a></span>-->
-
                                             <h1><a href="{{ url_for('posts.post', post_id=posts.items[k].id) }}" title="">{{posts.items[k].title}}</a></h1>
 
                                             <div class="entry__info">
@@ -37,8 +37,6 @@
 
                                     </div> <!-- end entry -->
 
-
-
                                     {%if count.value < list_len %}
                                       {% set count.value = count.value + 1 %}
                                     {% endif %}
@@ -50,7 +48,8 @@
 
             </div> <!-- end col-full -->
             </div> <!-- end pageheader-content row -->
-    {% endblock home_baners%}
+        {%endif%}
+{% endblock home_baners%}
 
     {% block content %}
         <!-- s-content
@@ -62,15 +61,12 @@
 
                     <div class="grid-sizer"></div>
                         {% for post in posts.items %}
-
-
                             <article class="masonry__brick entry format-standard" data-aos="fade-up">
-
                                 <div class="entry__thumb">
                                     <a href="{{ url_for('posts.post', post_id=post.id) }}" class="entry__thumb-link">
                                         <img src="{{ url_for('static', filename='post_pics/' + post.image_file) }}"
-                                                srcset="{{ url_for('static', filename='post_pics/' + post.image_file) }}
-                                                 1x, {{ url_for('static', filename='post_pics/' + post.image_file) }} 2x" alt="">
+                                                srcset="{{ url_for('static', filename='post_pics/' + post.image_file)}}
+                                                 1x, {{ url_for('static', filename='post_pics/' + post.image_file)}} 2x" alt="">
                                     </a>
                                 </div>
 
@@ -105,15 +101,19 @@
                 <div class="col-full">
                     <nav class="pgn">
                         <ul>
-                            <li><a class="pgn__prev" href="#0">Prev</a></li>
-                            <li><a class="pgn__num" href="#0">1</a></li>
-                            <li><span class="pgn__num current">2</span></li>
-                            <li><a class="pgn__num" href="#0">3</a></li>
-                            <li><a class="pgn__num" href="#0">4</a></li>
-                            <li><a class="pgn__num" href="#0">5</a></li>
-                            <li><span class="pgn__num dots">…</span></li>
-                            <li><a class="pgn__num" href="#0">8</a></li>
-                            <li><a class="pgn__next" href="#0">Next</a></li>
+                            {% for page_num in posts.iter_pages() %}
+                              {% if page_num %}
+                                {% if posts.page == page_num %}
+
+                                    <li><span class="pgn__num current">{{ page_num }}</span></li>
+                                {% else %}
+
+                                    <li><a class="pgn__num" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a></li>
+                                {% endif %}
+                              {% else %}
+                                ...
+                              {% endif %}
+                            {% endfor %}
                         </ul>
                     </nav>
                 </div>

@@ -2824,7 +2824,7 @@ html.no-csstransitions .featured {
    }
 
    .featured__column .entry__profile-pic {
-      display: none;
+      display: block;
    }
 
    .featured__column .entry__meta {

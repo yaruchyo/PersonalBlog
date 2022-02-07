@@ -1,45 +1,75 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="content-section">
-    <form method="POST" action="" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+
+<section class="s-content">
+
+    <div class="row masonry-wrap">
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.picture.label() }}
+                    {{ form.picture }}
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </fieldset>
+
             <div class="form-group">
-                {{ form.picture.label() }}
-                {{ form.picture }}
-                {% if form.picture.errors %}
-                    {% for error in form.picture.errors %}
-                        <span class="text-danger">{{ error }}</span></br>
-                    {% endfor %}
-                {% endif %}
+                {{ form.submit(class="btn btn-outline-info") }}
             </div>
-        </fieldset>
+        </form><!-- Upload new pictures -->
+        <div class="masonry">
+            <div class="grid-sizer"></div>
+            {% for image in images.items %}
+                <article class="masonry__brick entry format-standard" data-aos="fade-up">
+                <div class="entry__thumb">
+                        <img src="{{ url_for('static', filename='post_pics/' + image.image_file) }}"
+                             srcset="{{ url_for('static', filename='post_pics/' + image.image_file)}}
+                             1x, {{ url_for('static', filename='post_pics/' + image.image_file)}} 2x" alt="">
+                    </a>
+                </div>
 
-        <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+                <div class="entry__text">
+                    <div class="entry__header">
+                        <div class="entry__date">
+                            <a class="post-subtitle"> {{ url_for('static', filename='post_pics/' + image.image_file) }}</a>
+                        </div>
+                        <h1 class="entry__title"><a href="{{ url_for('posts.post', post_id=image.id) }}">{{ image.title }}</a></h1>
+
+                    </div>
+                </div>
+
+            </article> <!-- end article -->
+            {% endfor %}
+        </div> <!-- show images -->
+    </div> <!-- end masonry-wrap -->
+
+    <div class="row">
+        <div class="col-full">
+            <nav class="pgn">
+                <ul>
+                    {% for page_num in images.iter_pages() %}
+                    {% if page_num %}
+                    {% if images.page == page_num %}
+
+                    <li><span class="pgn__num current">{{ page_num }}</span></li>
+                    {% else %}
+
+                    <li><a class="pgn__num" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a></li>
+                    {% endif %}
+                    {% else %}
+                    ...
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
         </div>
-    </form>
-
-
-    {% for image in images.items %}
-    <div class="text-left">
-        <img src="{{ url_for('static', filename='post_pics/' + image.image_file) }}" class="img-fluid">
-        <a class="post-subtitle">{{ url_for('static', filename='post_pics/' + image.image_file) }}</a>
     </div>
-    <!-- Divider-->
-    <hr class="my-4" />
-    {% endfor %}
 
-    {% for page_num in images.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-      {% if page_num %}
-        {% if images.page == page_num %}
-          <a class="btn btn-info mb-4" href="{{ url_for('posts.upload_images', page=page_num) }}">{{ page_num }}</a>
-        {% else %}
-          <a class="btn btn-outline-info mb-4" href="{{ url_for('posts.upload_images', page=page_num) }}">{{ page_num }}</a>
-        {% endif %}
-      {% else %}
-        ...
-      {% endif %}
-    {% endfor %}
+</section> <!-- s-content -->
 
-</div>
 {% endblock content %}
