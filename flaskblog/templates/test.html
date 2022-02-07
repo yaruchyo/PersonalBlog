@@ -1,0 +1,44 @@
+<header class="masthead"
+        style="background-image: url({{ url_for('static', filename='assets/img/home-bg.jpg')}})">
+<div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Clean Blog</h1>
+                    <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% extends "layout.html" %}
+    {% block content %}
+        {% for post in posts.items %}
+            <div class="post-preview">
+                <a href="{{ url_for('posts.post', post_id=post.id) }}">
+                    <h2 class="post-title">{{ post.title }}</h2>
+                    <h3 class="post-subtitle">{{ post.description }}</h3>
+                    <img src="{{ url_for('static', filename='post_pics/' + post.image_file) }}" class="img-fluid">
+                </a>
+                <p class="post-meta">
+                    Posted by
+                    <a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                    on {{ post.date_posted.strftime('%Y-%m-%d') }}
+                </p>
+            </div>
+            <!-- Divider-->
+            <hr class="my-4" />
+        {% endfor %}
+        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+            {% if posts.page == page_num %}
+              <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+              <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            {% endif %}
+          {% else %}
+            ...
+          {% endif %}
+        {% endfor %}
+    {% endblock content %}
