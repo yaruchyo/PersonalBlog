@@ -1,59 +1,79 @@
-{% extends "layout_rest.html" %}
+{% extends "layout.html" %}
     {% block content %}
+    <section class="s-content s-content--narrow s-content--no-padding-bottom">
+
+
+            <div id="comments" class="row">
+                <div class="col-full">
+                    <div class="respond">
+                        <h3 class="h2">Update Post</h3>
+                        <form name="contactForm" id="contactForm" method="post" action="">
+                            <fieldset>
+                                <div class="form-field">
+                                    {% if form.title.errors %}
+                                        {{ form.title(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.title.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form.title(class="full-width") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-field">
+                                    {% if form.description.errors %}
+                                        {{ form.description(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.description.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form.description(class="full-width") }}
+                                    {% endif %}
+                                </div>
+                                <div class="message form-field">
+                                    {% if form.content.errors %}
+                                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.content.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form.content(class="full-width") }}
+                                    {% endif %}
+                                </div>
+                                <div class="message form-field">
+                                    {{ form.picture.label(class="form-control form-control-lg is-invalid") }}
+                                    {{ form.picture}}
+                                    {% if form.picture.errors %}
+                                        {% for error in form.picture.errors %}
+                                            <span class="text-danger">{{ error }}</span></br>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                <button type="submit" class="submit btn--primary btn--large full-width">Submit</button>
+                                {{ form.submit(class="btn btn-outline-info") }}
+                            </fieldset>
+                        </form> <!-- end form -->
+                    </div> <!-- end respond -->
+                </div> <!-- end col-full -->
+            </div> <!-- end row comments -->
+
+
+    </section> <!-- s-content -->
     <div class="content-section">
         <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">{{ legend }}</legend>
-                <div class="form-group">
-                    {{ form.title.label(class="form-control-label") }}
-                    {% if form.title.errors %}
-                        {{ form.title(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.title.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.title(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.description.label(class="form-control-label") }}
-                    {% if form.description.errors %}
-                        {{ form.description(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.description.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.description(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.content.label(class="form-control-label") }}
-                    {% if form.content.errors %}
-                        {{ form.content(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.content.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.content(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
 
-                <div class="form-group">
-                    {{ form.picture.label() }}
-                    {{ form.picture }}
-                    {% if form.picture.errors %}
-                        {% for error in form.picture.errors %}
-                            <span class="text-danger">{{ error }}</span></br>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+
+
+
 
             </fieldset>
 

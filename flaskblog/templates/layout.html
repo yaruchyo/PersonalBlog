@@ -4,9 +4,9 @@
         <!--- basic page needs
         ================================================== -->
         <meta charset="utf-8">
-        <title>Philosophy</title>
         <meta name="description" content="">
         <meta name="author" content="">
+
 
         <!-- mobile specific metas
         ================================================== -->
@@ -14,6 +14,7 @@
 
         <!-- CSS
         ================================================== -->
+
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendor.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
@@ -31,7 +32,7 @@
         <link rel="icon" href="favicon.ico" type="image/x-icon">
 
         {% if title %}
-            <title>Flask Blog - {{ title }}</title>
+            <title>Flask Blog - {{ title }} - {{home_page}}</title>
         {% else %}
             <title>Flask Blog</title>
         {% endif %}
@@ -41,7 +42,13 @@
 
         <!-- pageheader
         ================================================== -->
-        <section class="s-pageheader s-pageheader--home">
+
+        {% if home_page %}
+            <section class="s-pageheader s-pageheader--home">
+        {%else%}
+            <section class="s-pageheader s-pageheader">
+        {%endif%}
+
 
             <header class="header">
             <div class="header__content row">
@@ -95,7 +102,6 @@
             {% endblock %}
 
         </section> <!-- end s-pageheader -->
-
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -112,5 +118,6 @@
         <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
         </body>
 </html>

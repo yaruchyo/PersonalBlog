@@ -36,8 +36,9 @@ def update_post(post_id):
     if post.author != current_user:
         abort(403)
     form = PostUpdateForm()
+    print(form.picture.data)
     if form.validate_on_submit():
-        print(form.picture.data)
+
         if form.picture.data:
             picture_file = save_blog_picture(form.picture.data)
             post.image_file = picture_file
@@ -74,6 +75,7 @@ def upload_images():
     images = Images.query.order_by(Images.date_posted.desc()).paginate(page=page, per_page=10)
     form = UploadPostImagesForm()
     if form.validate_on_submit():
+
         files_filenames = []
         for img in form.picture.data:
             picture_file = save_blog_picture(img)

@@ -1,61 +1,50 @@
-{% extends "layout_home.html" %}
+{% extends "layout.html" %}
     {% block home_baners%}
         <div class="pageheader-content row">
             <div class="col-full">
 
-                <div class="featured">
+                <div class="featured">.
+                    {%set count = namespace(value=0) %}
+                    {%set list_len = posts.items|length-1 %}
                     {%for i in range(2)%}
                         {%if i == 0%}
-                            <div class="featured__column featured__column--big">
-
-                                <div class="entry" style="background-image:url({{ url_for('static', filename='post_pics/' + posts.items[i].image_file)}});">
-
-                                    <div class="entry__content">
-                                        <span class="entry__category"><a href="{{ url_for('posts.post', post_id=posts.items[i].id) }}">Music</a></span>
-
-                                        <h1><a href="{{ url_for('posts.post', post_id=posts.items[i].id) }}" title="">{{posts.items[i].title}}</a></h1>
-
-                                        <div class="entry__info">
-                                            <a href="#0" class="entry__profile-pic">
-                                                <img class="avatar" src="images/avatars/user-03.jpg" alt="">
-                                            </a>
-
-                                            <ul class="entry__meta">
-                                                <li><a href="#0">John Doe</a></li>
-                                                <li>December 29, 2017</li>
-                                            </ul>
-                                        </div>
-                                    </div> <!-- end entry__content -->
-
-                                </div> <!-- end entry -->
-
-                            </div> <!-- end featured__big -->
+                            {%set size = 'big'%}
+                            {%set loop_number = 1%}
                         {%else%}
-                            <div class="featured__column featured__column--small">
-                                {%for j in range(2)%}
-                                    <div class="entry" style="background-image:url('static/images/thumbs/featured/featured-watch.jpg');">
-
-                                    <div class="entry__content">
-                                        <span class="entry__category"><a href="#0">Management</a></span>
-
-                                        <h1><a href="#0" title="">The Pomodoro Technique Really Works.</a></h1>
-
-                                        <div class="entry__info">
-                                            <a href="#0" class="entry__profile-pic">
-                                                <img class="avatar" src="images/avatars/user-03.jpg" alt="">
-                                            </a>
-
-                                            <ul class="entry__meta">
-                                                <li><a href="#0">John Doe</a></li>
-                                                <li>December 27, 2017</li>
-                                            </ul>
-                                        </div>
-                                    </div> <!-- end entry__content -->
-
-                                </div> <!-- end entry -->
-                                {%endfor%}
-                            </div> <!-- end featured__small -->
+                            {%set size = 'small'%}
+                            {%set loop_number = 2%}
                         {%endif%}
+                            <div class="featured__column featured__column--{{size}}">
+                                {%for j in range(loop_number)%}
+                                    {%set k = count.value%}
+                                    <div class="entry" style="background-image:url({{ url_for('static', filename='post_pics/' + posts.items[k].image_file)}});">
+                                        <div class="entry__content">
+<!--                                            <span class="entry__category"><a href="{{ url_for('posts.post', post_id=posts.items[k].id) }}">Music</a></span>-->
+
+                                            <h1><a href="{{ url_for('posts.post', post_id=posts.items[k].id) }}" title="">{{posts.items[k].title}}</a></h1>
+
+                                            <div class="entry__info">
+                                                <a href="#0" class="entry__profile-pic">
+                                                    <img class="avatar" src="{{ url_for('static', filename='profile_pics/' + posts.items[k].author.image_file)}}" alt="">
+                                                </a>
+
+                                                <ul class="entry__meta">
+                                                    <li><a href="#0">{{posts.items[k].author.username}}</a></li>
+                                                    <li>{{ posts.items[k].date_posted.strftime('%Y-%m-%d') }}</li>
+                                                </ul>
+                                            </div>
+                                        </div> <!-- end entry__content -->
+
+                                    </div> <!-- end entry -->
+
+
+
+                                    {%if count.value < list_len %}
+                                      {% set count.value = count.value + 1 %}
+                                    {% endif %}
+                                {%endfor%}
+                            </div> <!-- end featured__big -->
+
                     {%endfor%}
                 </div> <!-- end featured -->
 
@@ -89,9 +78,9 @@
                                     <div class="entry__header">
 
                                         <div class="entry__date">
-                                            <a href="single-standard.html">{{ post.date_posted.strftime('%Y-%m-%d') }}</a>
+                                            <a>{{ post.date_posted.strftime('%Y-%m-%d') }}</a>
                                         </div>
-                                        <h1 class="entry__title"><a href="single-standard.html">{{ post.title }}</a></h1>
+                                        <h1 class="entry__title"><a href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h1>
 
                                     </div>
                                     <div class="entry__excerpt">
@@ -131,6 +120,5 @@
             </div>
 
         </section> <!-- s-content -->
-
 
     {% endblock content %}
