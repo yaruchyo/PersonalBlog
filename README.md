@@ -1,5 +1,7 @@
-# Personal Blg
-##Quick Start
+# Personal Blog
+
+Quick Start:
+
 	git clone https://github.com/yaruchyo/PersonalBlog.git
 	cd PersonalBlog
 	python3 -m venv venv
