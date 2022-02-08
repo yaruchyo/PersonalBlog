@@ -1,0 +1,15 @@
+version: '2'
+# NOTE: move this answer file up a directory so it'll work
+
+services:
+
+  ubuntu:
+    image: personal_blog
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - blog
+
+networks:
+  blog:
