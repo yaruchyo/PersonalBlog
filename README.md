@@ -2,7 +2,6 @@
 
 ## Quick Start - localy:
 
-	git clone -b v1.0 https://github.com/yaruchyo/PersonalBlog.git
 	cd PersonalBlog
 	python3 -m venv venv
 	source venv/bin/activate
