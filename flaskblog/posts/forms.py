@@ -22,5 +22,5 @@ class PostUpdateForm(FlaskForm):
 
 
 class UploadPostImagesForm(FlaskForm):
-    picture = MultipleFileField('Upload Image to last post', validators=[FileAllowed(['jpg', 'png'])])
+    picture = MultipleFileField('Upload Image to last post', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Upload')
