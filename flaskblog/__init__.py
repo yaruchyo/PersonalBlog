@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flaskblog.config import ProductionConfig, DevelopmentConfig
 from dotenv import load_dotenv
+from flask_sslify import SSLify
 import os
 
 load_dotenv()
@@ -43,5 +44,8 @@ def create_app(config_class=DevelopmentConfig):
     app.register_blueprint(posts)
     app.register_blueprint(main)
     app.register_blueprint(errors)
+
+    if 'DYNO' in os.environ:
+        sslify = SSLify(app)
 
     return app

@@ -9,4 +9,5 @@ Flask-Bcrypt
 Flask-Login
 Pillow
 python-dotenv
-itsdangerous
+Flask-SSLify
+itsdangerous == 1.1.0
