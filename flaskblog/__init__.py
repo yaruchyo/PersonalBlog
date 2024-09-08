@@ -25,7 +25,7 @@ def create_app(config_class=DevelopmentConfig):
 
     if os.getenv('ENV') == 'development':
         config_class = DevelopmentConfig
-    elif os.getenv('ENV')== 'production':
+    elif os.getenv('ENV') == 'production':
         config_class = ProductionConfig
 
     app.config.from_object(config_class)
