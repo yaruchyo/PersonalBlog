@@ -1,6 +1,5 @@
 venve
-flaskblog/site.db
-flaskblog/site_bak.db
+instance/*
 *__pychache__*
 /flaskblog/config.py
 .idea/*
