@@ -45,7 +45,7 @@ def create_app(config_class=DevelopmentConfig):
     app.register_blueprint(main)
     app.register_blueprint(errors)
 
-    if 'DYNO' in os.environ:
-        sslify = SSLify(app)
+    # if 'DYNO' in os.environ:
+    #     sslify = SSLify(app)
 
     return app
