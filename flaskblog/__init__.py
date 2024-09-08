@@ -4,7 +4,10 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flaskblog.config import ProductionConfig, DevelopmentConfig
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -19,9 +22,9 @@ def create_app(config_class=DevelopmentConfig):
 
     app = Flask(__name__)
 
-    if app.config['ENV'] == 'development':
+    if os.getenv('ENV') == 'development':
         config_class = DevelopmentConfig
-    elif app.config['ENV'] == 'production':
+    elif os.getenv('ENV')== 'production':
         config_class = ProductionConfig
 
     app.config.from_object(config_class)
