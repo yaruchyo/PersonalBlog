@@ -4,11 +4,11 @@ from flaskblog import db, bcrypt
 from flaskblog.models import User, Post
 from flaskblog.users.forms import (LoginForm, UpdateAccountForm)
 from flaskblog.users.utils import save_profile_picture, delete_picture
-
+import os
 users = Blueprint('users', __name__)
 
-
-@users.route("/admin", methods=['GET', 'POST'])
+admin_path = os.getenv("ADMIN_PATH")
+@users.route(f"/{admin_path}", methods=['GET', 'POST'])
 def admin():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))

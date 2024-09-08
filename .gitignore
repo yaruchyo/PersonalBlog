@@ -3,3 +3,4 @@ instance/*
 *__pychache__*
 /flaskblog/config.py
 .idea/*
+.env
