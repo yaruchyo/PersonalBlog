@@ -54,4 +54,4 @@ class Images(db.Model):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+        return f"Post('{self.image_file}', '{self.date_posted}')"

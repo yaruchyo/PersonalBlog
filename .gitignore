@@ -3,3 +3,4 @@ flaskblog/site.db
 flaskblog/site_bak.db
 *__pychache__*
 /flaskblog/config.py
+.idea/*
