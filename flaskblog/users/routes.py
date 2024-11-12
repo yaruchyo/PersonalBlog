@@ -44,12 +44,14 @@ def account():
         if form.password.data:
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             current_user.password = hashed_password
+        current_user.legal_name = form.legal_name.data
         current_user.username = form.username.data
         current_user.email = form.email.data
         User.update_user_data(current_user)
         flash('Your account has been updated!', 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
+        form.legal_name.data = current_user.legal_name
         form.username.data = current_user.username
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)

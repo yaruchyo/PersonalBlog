@@ -21,10 +21,10 @@ def test_get_all_documents():
     for i in results:
         print(i)
 def test_update_element():
-    mongo.update_document('users', {"_id": ObjectId('66de10020b7fd6d2e67fe144')}, {"age": 31})
+    mongo.update_document('users', {"_id": ObjectId('673349c7ef31ac60198c4086')}, {"legal_name": 'Oleg Yaruchyk'})
 
 def test_delete_all():
-    db_name = "posts"
+    db_name = "images"
     results = mongo.find_documents(db_name, {})
     for element in results:
         id = element["_id"]

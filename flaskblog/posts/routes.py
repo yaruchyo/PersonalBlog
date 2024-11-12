@@ -5,6 +5,7 @@ from flaskblog import db
 from flaskblog.models import Post, Images
 from flaskblog.posts.forms import PostForm, PostUpdateForm, UploadPostImagesForm
 from flaskblog.users.utils import save_blog_picture, delete_picture
+from bson import ObjectId
 from math import ceil
 
 posts = Blueprint('posts', __name__)
@@ -26,7 +27,8 @@ def new_post():
 @posts.route("/post/<int:post_id>")
 def post(post_id):
     post = db.find_document("posts", {"_id": post_id})
-
+    user = db.find_document('users',  {"_id": ObjectId( post['author'])})
+    post['author_name'] = user['legal_name']
     return render_template('post.html', title=post['title'], post=post)
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])

@@ -14,6 +14,7 @@ class User(UserMixin):
     def __init__(self, user_data, image_file="default.jpg"):
         self.id = str(user_data['_id'])
         self.username = user_data['username']
+        self.legal_name = user_data['legal_name']
         self.email = user_data['email']
         self.password = user_data['password']
         self.image_file = user_data['image_file']
@@ -84,7 +85,8 @@ class User(UserMixin):
                                 "password": current_user.password,
                                 "email": current_user.email,
                                 "username": current_user.username,
-                                "image_file": current_user.image_file
+                                "image_file": current_user.image_file,
+                                "legal_name": current_user.legal_name
                            })
 
     def __repr__(self):

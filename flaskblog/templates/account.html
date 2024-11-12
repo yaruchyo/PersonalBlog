@@ -35,6 +35,18 @@
                             {% endif %}
                         </div>
                         <div class="form-group">
+                            {% if form.legal_name.errors %}
+                                {{ form.legal_name(class="full-width") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.legal_name.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.legal_name(class="full-width") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
                             {% if form.email.errors %}
                                 {{ form.email(class="full-width") }}
                                 <div class="invalid-feedback">
