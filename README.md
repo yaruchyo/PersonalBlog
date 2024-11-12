@@ -1,5 +1,7 @@
 # Personal Blog
 
+## EC2:
+    nohup gunicorn run:app --bind 0.0.0.0:8080 &
 ## Quick Start - localy:
 
 	cd PersonalBlog
