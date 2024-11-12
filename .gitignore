@@ -7,3 +7,4 @@ instance/*
 *.png
 *.jpeg
 .env
+.jpg
