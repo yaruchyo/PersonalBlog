@@ -27,6 +27,8 @@ def new_post():
 @posts.route("/post/<int:post_id>")
 def post(post_id):
     post = db.find_document("posts", {"_id": post_id})
+    if not post:
+        abort(403)
     user = db.find_document('users',  {"_id": ObjectId( post['author'])})
     post['author_name'] = user['legal_name']
     return render_template('post.html', title=post['title'], post=post)
