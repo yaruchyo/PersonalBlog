@@ -3,4 +3,7 @@ instance/*
 */__pychache__*
 /flaskblog/config.py
 .idea/*
+**.env
+*.png
+*.jpeg
 .env
