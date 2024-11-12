@@ -12,14 +12,25 @@ def save_profile_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
+
+    # Open the image
     i = Image.open(form_picture)
-    w,h = i.size
+
+    # Get the original image dimensions
+    w, h = i.size
     smaller_size = w if w < h else h
-    crop_area = (0,0,smaller_size,smaller_size)
+
+    # Define the crop area to make the image square
+    crop_area = (0, 0, smaller_size, smaller_size)
     i = i.crop(crop_area)
+
+    # Define the output size and resize the image using LANCZOS filter
     output_size = (125, 125)
-    i.thumbnail(output_size, Image.ANTIALIAS)
+    i.thumbnail(output_size, Image.Resampling.LANCZOS)
+
+    # Save the image
     i.save(picture_path)
+
     return picture_fn
 
 

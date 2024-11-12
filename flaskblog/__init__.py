@@ -1,22 +1,28 @@
-from flask import Flask
+from flask import Flask, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flaskblog.config import ProductionConfig, DevelopmentConfig
 from dotenv import load_dotenv
+from tests.mongo_db import MongoDB
+
 from flask_sslify import SSLify
 import os
 
 load_dotenv()
+db_name = "db_test"
+db = MongoDB(db_name)
 
-db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
-login_manager.login_view = 'users.login'
+#login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 mail = Mail()
 
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    abort(404)
 
 
 def create_app(config_class=DevelopmentConfig):
@@ -30,7 +36,7 @@ def create_app(config_class=DevelopmentConfig):
 
     app.config.from_object(config_class)
     app.static_folder = 'static'
-    db.init_app(app)
+    #db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)

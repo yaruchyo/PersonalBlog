@@ -5,12 +5,11 @@
     <section class="s-content s-content--narrow s-content--no-padding-bottom">
       <article class="row format-standard">
         <div class="s-content__header col-full">
-            {% if post.author == current_user %}
-
-                <form action="{{ url_for('posts.update_post', post_id=post.id) }}" method="GET">
+            {% if post.author == current_user.id %}
+                <form action="{{ url_for('posts.update_post', post_id=post._id) }}" method="GET">
                                         <input class="btn btn-danger" type="submit" value="Update">
                 </form>
-                <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+                <form action="{{ url_for('posts.delete_post', post_id=post._id) }}" method="POST">
                     <input class="btn btn-danger" type="submit" value="Delete">
                 </form>
 

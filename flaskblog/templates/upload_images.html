@@ -25,7 +25,7 @@
 
         <div class="masonry">
             <div class="grid-sizer"></div>
-            {% for image in images.items %}
+            {% for image in images %}
                 <article class="masonry__brick entry format-standard" data-aos="fade-up">
                 <div class="entry__thumb">
                         <img src="{{ url_for('static', filename='post_pics/' + image.image_file) }}"
@@ -37,9 +37,11 @@
                 <div class="entry__text">
                     <div class="entry__header">
                         <div class="entry__date">
-                            <a class="post-subtitle"> {{ url_for('static', filename='post_pics/' + image.image_file) }}</a>
+                            <p>{{ url_for('static', filename='post_pics/' + image.image_file) }}</p>
+
                         </div>
-                        <h1 class="entry__title"><a href="{{ url_for('posts.post', post_id=image.id) }}">{{ image.title }}</a></h1>
+                        {{image._id}}
+                        <h1 class="entry__title"><a href="{{ url_for('posts.post', post_id=image._id) }}">{{ image._id }}</a></h1>
 
                     </div>
                 </div>
@@ -53,18 +55,12 @@
         <div class="col-full">
             <nav class="pgn">
                 <ul>
-                    {% for page_num in images.iter_pages() %}
-                    {% if page_num %}
-                    {% if images.page == page_num %}
-
-                    <li><span class="pgn__num current">{{ page_num }}</span></li>
-                    {% else %}
-
-                    <li><a class="pgn__num" href="{{ url_for('posts.upload_images', page=page_num) }}">{{ page_num }}</a></li>
-                    {% endif %}
-                    {% else %}
-                    ...
-                    {% endif %}
+                    {% for page_num in range(1, total_pages + 1) %}
+                        {% if current_page == page_num %}
+                            <li><span class="pgn__num current">{{ page_num }}</span></li>
+                        {% else %}
+                            <li><a class="pgn__num" href="{{ url_for('posts.upload_images', page=page_num) }}">{{ page_num }}</a></li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </nav>

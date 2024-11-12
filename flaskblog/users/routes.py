@@ -5,6 +5,7 @@ from flaskblog.models import User, Post
 from flaskblog.users.forms import (LoginForm, UpdateAccountForm)
 from flaskblog.users.utils import save_profile_picture, delete_picture
 import os
+
 users = Blueprint('users', __name__)
 
 admin_path = os.getenv("ADMIN_PATH")
@@ -14,8 +15,9 @@ def admin():
         return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
+        user_data = db.find_document("users", {'username': form.username.data})
+        if user_data and bcrypt.check_password_hash(user_data['password'], form.password.data):
+            user = User(user_data)
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
@@ -36,7 +38,7 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
-            delete_picture('static/profile_pics', current_user.image_file)
+            #delete_picture('static/profile_pics', current_user.image_file)
             picture_file = save_profile_picture(form.picture.data)
             current_user.image_file = picture_file
         if form.password.data:
@@ -44,7 +46,7 @@ def account():
             current_user.password = hashed_password
         current_user.username = form.username.data
         current_user.email = form.email.data
-        db.session.commit()
+        User.update_user_data(current_user)
         flash('Your account has been updated!', 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
@@ -55,13 +57,13 @@ def account():
                            image_file=image_file, form=form)
 
 
-@users.route("/user/<string:username>")
-def user_posts(username):
-    page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user)\
-        .order_by(Post.date_posted.desc())\
-        .paginate(page=page, per_page=5)
-    return render_template('user_posts.html', posts=posts, user=user)
+# @users.route("/user/<string:username>")
+# def user_posts(username):
+#     page = request.args.get('page', 1, type=int)
+#     user = User.query.filter_by(username=username).first_or_404()
+#     posts = Post.query.filter_by(author=user)\
+#         .order_by(Post.date_posted.desc())\
+#         .paginate(page=page, per_page=5)
+#     return render_template('user_posts.html', posts=posts, user=user)
 
 
