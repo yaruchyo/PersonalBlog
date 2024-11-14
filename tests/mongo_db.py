@@ -102,6 +102,11 @@ class MongoDB:
         """
         return self.db[collection_name].count_documents(query)
 
+    def get_max_id(self, collection_name: str, query: dict):
+        max_id_doc = self.db[collection_name].find(query).sort("_id", -1).limit(1)
+        max_id = max_id_doc.next()["_id"] if max_id_doc.alive else None
+        return max_id
+
     def close_connection(self):
         """
         Closes the MongoDB connection.

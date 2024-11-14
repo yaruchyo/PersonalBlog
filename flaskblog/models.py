@@ -93,13 +93,14 @@ class User(UserMixin):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 class Post:
-    def __init__(self, title, description, content, author,  image_file):
-        self._id = db.count_documents('posts') + 1
+    def __init__(self, title, description, content, author,  image_file, image_bytes):
+        self._id = db.get_max_id('posts', {}) + 1
         self.title = title
         self.date_posted = datetime.utcnow()
         self.description = description
         self.content = content
         self.image_file = image_file
+        self.image_bytes = image_bytes
         self.author = author.id  # store user id as reference
 
     def get_paginated_posts(page: int, per_page: int = 20):
@@ -114,9 +115,10 @@ class Post:
         return f"Post('{self.title}', '{self.date_posted}')"
 
 class Images:
-    def __init__(self, image_file="default.jpg"):
+    def __init__(self, image_bytes, image_file="default.jpg"):
         self.date_posted = datetime.utcnow()
         self.image_file = image_file
+        self.image_bytes = image_bytes
 
     def save(self):
         # Insert the image document into MongoDB

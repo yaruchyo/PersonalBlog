@@ -1,7 +1,10 @@
 # Personal Blog
 
 ## EC2:
+    source ./myenv/bin/activate
     nohup gunicorn run:app --bind 0.0.0.0:8080 &
+    sudo kill -9 $(sudo lsof -t -i:8080)
+
 ## Quick Start - localy:
 
 	cd PersonalBlog

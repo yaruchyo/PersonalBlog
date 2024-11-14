@@ -5,6 +5,9 @@ from PIL import Image
 from flask import url_for, current_app
 from flask_mail import Message
 from flaskblog import mail
+from io import BytesIO
+import base64
+
 
 
 def save_profile_picture(form_picture):
@@ -42,6 +45,22 @@ def save_blog_picture(form_picture):
     i = Image.open(form_picture)
     i.save(picture_path)
     return picture_fn
+
+def convert_picture_to_byte(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    #picture_path = os.path.join(current_app.root_path, 'static/post_pics', picture_fn)
+    i = Image.open(form_picture)
+    #i.save(picture_path)
+    format_type = "JPEG" if f_ext.lower() in ['.jpg', '.jpeg'] else "PNG"
+    img_bytes = BytesIO()
+    i.save(img_bytes, format=i.format)  # Save in the original format
+    img_bytes.seek(0)
+    binary_data = img_bytes.getvalue()
+    # Convert binary data to Base64 string
+    image_base64 = base64.b64encode(binary_data).decode('utf-8')
+    return f"data:image/{format_type.lower()};base64,{image_base64}", picture_fn
 
 
 def send_reset_email(user):

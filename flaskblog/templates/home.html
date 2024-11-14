@@ -64,9 +64,11 @@
                             <article class="masonry__brick entry format-standard" data-aos="fade-up">
                                 <div class="entry__thumb">
                                     <a href="{{ url_for('posts.post', post_id=post.id) }}" class="entry__thumb-link">
-                                        <img src="{{ url_for('static', filename='post_pics/' + post.image_file) }}"
-                                                srcset="{{ url_for('static', filename='post_pics/' + post.image_file)}}
-                                                 1x, {{ url_for('static', filename='post_pics/' + post.image_file)}} 2x" alt="">
+                                        {% if post.image_bytes %}
+                                            <img src="{{post.image_bytes}}" alt="Post Image">
+                                        {% else %}
+                                            <img src="{{ url_for('static', filename='default.jpg') }}" alt="Default Image">
+                                        {% endif %}
                                     </a>
                                 </div>
 

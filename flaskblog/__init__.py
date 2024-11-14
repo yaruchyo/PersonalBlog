@@ -5,7 +5,9 @@ from flask_mail import Mail
 from flaskblog.config import ProductionConfig, DevelopmentConfig
 from dotenv import load_dotenv
 from tests.mongo_db import MongoDB
-
+import threading
+import time
+import requests
 from flask_sslify import SSLify
 import os
 
@@ -19,10 +21,21 @@ login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 mail = Mail()
 
+
 @login_manager.unauthorized_handler
 def unauthorized_callback():
     abort(404)
 
+def call_webpage():
+    web_page = os.getenv('WEB_PAGE')
+    while True:
+        try:
+            response = requests.get(web_page)
+            print(f"I got the response: {response}")
+            # Process the response if needed
+        except requests.RequestException as e:
+            print(f"An error occurred: {e}")
+        time.sleep(10)  # Wait for 10 seconds before the next request
 
 def create_app(config_class=DevelopmentConfig):
 
@@ -32,6 +45,9 @@ def create_app(config_class=DevelopmentConfig):
         config_class = DevelopmentConfig
     elif os.getenv('ENV') == 'production':
         config_class = ProductionConfig
+        thread = threading.Thread(target=call_webpage)
+        thread.start()
+
 
     app.config.from_object(config_class)
     app.static_folder = 'static'

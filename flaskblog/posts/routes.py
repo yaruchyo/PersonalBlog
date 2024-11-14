@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from flaskblog import db
 from flaskblog.models import Post, Images
 from flaskblog.posts.forms import PostForm, PostUpdateForm, UploadPostImagesForm
-from flaskblog.users.utils import save_blog_picture, delete_picture
+from flaskblog.users.utils import save_blog_picture, delete_picture, convert_picture_to_byte
 from bson import ObjectId
 from math import ceil
 
@@ -15,9 +15,9 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        picture_file = save_blog_picture(form.picture.data)
+        picture_byte, picture_file  = convert_picture_to_byte(form.picture.data)
         post = Post(title=form.title.data, description=form.description.data, content=form.content.data,
-                    image_file=picture_file, author=current_user)
+                    image_file=picture_file, image_bytes=picture_byte, author=current_user)
         post.save()
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.home'))
@@ -45,7 +45,9 @@ def update_post(post_id):
 
         if form.picture.data:
             picture_file = save_blog_picture(form.picture.data)
+            picture_byte, picture_file = convert_picture_to_byte(form.picture.data)
             post['image_file'] = picture_file
+            post['image_bytes'] = picture_byte
         post['title'] = form.title.data
         post['description'] = form.description.data
         post['content'] = form.content.data
@@ -82,13 +84,10 @@ def upload_images(per_page=25):
     total_pages = ceil(total_images / per_page)
     form = UploadPostImagesForm()
     if form.validate_on_submit():
-
-        files_filenames = []
         for img in form.picture.data:
-            picture_file = save_blog_picture(img)
-            files_filenames.append(picture_file)
-        for picture_file in files_filenames:
-            image = Images(image_file=picture_file)
+            #picture_file = save_blog_picture(img)
+            picture_byte, picture_file = convert_picture_to_byte(img)
+            image = Images(image_file=picture_file, image_bytes=picture_byte)
             image.save()
         return redirect(url_for('posts.upload_images'))
     return render_template('upload_images.html', form=form, images=images, total_pages=total_pages, current_page=current_page)
