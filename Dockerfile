@@ -8,11 +8,8 @@ WORKDIR /PersonalBlog
 # Copy the project files into the container
 COPY . .
 
-
-RUN python3 -m venv venv && \
-    /bin/bash -c "source venv/bin/activate" && \
-    pip3 install -r requirements.txt
-
-CMD gunicorn run:app --bind 0.0.0.0:8080
+EXPOSE 8080
+RUN pip3 install -r requirements.txt
+CMD ["waitress-serve", "--host=0.0.0.0", "--port=8080", "run:app"]
 
 
