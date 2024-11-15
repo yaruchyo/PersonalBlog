@@ -46,7 +46,7 @@ def create_app(config_class=DevelopmentConfig):
     elif os.getenv('ENV') == 'production':
         config_class = ProductionConfig
         thread = threading.Thread(target=call_webpage)
-        thread.start()
+        #thread.start()
 
 
     app.config.from_object(config_class)
