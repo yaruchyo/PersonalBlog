@@ -10,7 +10,7 @@ COPY . .
 
 EXPOSE 8080
 RUN pip3 install --no-cache-dir -r requirements.txt
-CMD ["gunicorn", "-w", "3", "-t", "120", "-b", "0.0.0.0:8080", "run:app"]
+CMD ["gunicorn", "--workers", "2", "--threads", "4", "-b", "0.0.0.0:8080", "run:app"]
 
 
 
