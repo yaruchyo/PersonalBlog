@@ -9,7 +9,7 @@ WORKDIR /PersonalBlog
 COPY . .
 
 EXPOSE 8080
-RUN pip3 install -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 CMD ["waitress-serve", "--host=0.0.0.0", "--port=8080", "run:app"]
 
 
