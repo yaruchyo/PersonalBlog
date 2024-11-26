@@ -1,6 +1,7 @@
+import os
 from datetime import datetime
 from itsdangerous import TimedSerializer as Serializer
-from flaskblog import db, login_manager
+from flaskblog import db, login_manager, file_storage
 from flask import current_app
 from flask_login import UserMixin
 from bson.objectid import ObjectId
@@ -93,14 +94,14 @@ class User(UserMixin):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 class Post:
-    def __init__(self, title, description, content, author,  image_file, image_bytes):
+    def __init__(self, title, description, content, author, image_url, image_filename):
         self._id = db.get_max_id('posts', {}) + 1
         self.title = title
         self.date_posted = datetime.utcnow()
         self.description = description
         self.content = content
-        self.image_file = image_file
-        self.image_bytes = image_bytes
+        self.image_url = image_url
+        self.image_filename=image_filename
         self.author = author.id  # store user id as reference
 
     def get_paginated_posts(page: int, per_page: int = 20):
@@ -114,11 +115,12 @@ class Post:
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
+
 class Images:
-    def __init__(self, image_bytes, image_file="default.jpg"):
+    def __init__(self, image_url, image_filename ="default.jpg"):
         self.date_posted = datetime.utcnow()
-        self.image_file = image_file
-        self.image_bytes = image_bytes
+        self.image_filename = image_filename
+        self.image_url = image_url
 
     def save(self):
         # Insert the image document into MongoDB

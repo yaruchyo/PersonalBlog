@@ -1,4 +1,4 @@
-from tests.mongo_db import MongoDB
+from flaskblog.service_layer.database_repository.mongo_db import MongoDB
 from bson import ObjectId
 db_name = "db_test"
 db_collection = "collection_test"

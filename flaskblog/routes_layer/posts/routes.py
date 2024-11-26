@@ -1,10 +1,10 @@
 from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
-from flaskblog import db
-from flaskblog.models import Post, Images
-from flaskblog.posts.forms import PostForm, PostUpdateForm, UploadPostImagesForm
-from flaskblog.users.utils import save_blog_picture, delete_picture, convert_picture_to_byte
+from flaskblog import db, file_storage
+from flaskblog.service_layer.models import Post, Images
+from flaskblog.routes_layer.posts.forms import PostForm, PostUpdateForm, UploadPostImagesForm
+from flaskblog.routes_layer.users.utils import get_filebase_image_url, delete_picture, store_file_to_temp_folder
 from bson import ObjectId
 from math import ceil
 
@@ -15,9 +15,12 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        picture_byte, picture_file  = convert_picture_to_byte(form.picture.data)
+        temp_file_path = store_file_to_temp_folder(form.picture.data)
+        response = file_storage.upload(file_path=temp_file_path)
+        image_url_id = response['ResponseMetadata']['HTTPHeaders']['x-amz-meta-cid']
+        image_url = get_filebase_image_url(image_url_id)
         post = Post(title=form.title.data, description=form.description.data, content=form.content.data,
-                    image_file=picture_file, image_bytes=picture_byte, author=current_user)
+                    image_url=image_url, image_filename=temp_file_path.split("/")[-1], author=current_user)
         post.save()
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.home'))
@@ -44,10 +47,12 @@ def update_post(post_id):
     if form.validate_on_submit():
 
         if form.picture.data:
-            picture_file = save_blog_picture(form.picture.data)
-            picture_byte, picture_file = convert_picture_to_byte(form.picture.data)
-            post['image_file'] = picture_file
-            post['image_bytes'] = picture_byte
+            temp_file_path = store_file_to_temp_folder(form.picture.data)
+            response = file_storage.upload(file_path=temp_file_path)
+            image_url_id = response['ResponseMetadata']['HTTPHeaders']['x-amz-meta-cid']
+            image_url = get_filebase_image_url(image_url_id)
+            post['image_url'] = image_url
+            post['image_filename'] = temp_file_path.split("/")[-1]
         post['title'] = form.title.data
         post['description'] = form.description.data
         post['content'] = form.content.data
@@ -68,7 +73,7 @@ def delete_post(post_id):
     post = db.find_document('posts', {'_id': post_id})
     if post['author'] != current_user.id:
         abort(403)
-    delete_picture('static/post_pics', post['image_file'])
+    file_storage.delete(post['image_filename'])
     db.delete_documents('posts', {'_id': post_id})
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main.home'))
@@ -85,9 +90,11 @@ def upload_images(per_page=25):
     form = UploadPostImagesForm()
     if form.validate_on_submit():
         for img in form.picture.data:
-            #picture_file = save_blog_picture(img)
-            picture_byte, picture_file = convert_picture_to_byte(img)
-            image = Images(image_file=picture_file, image_bytes=picture_byte)
+            temp_file_path = store_file_to_temp_folder(img)
+            response = file_storage.upload(file_path=temp_file_path)
+            image_url_id = response['ResponseMetadata']['HTTPHeaders']['x-amz-meta-cid']
+            image_url = get_filebase_image_url(image_url_id)
+            image = Images(image_url=image_url, image_filename=temp_file_path.split("/")[-1])
             image.save()
         return redirect(url_for('posts.upload_images'))
     return render_template('upload_images.html', form=form, images=images, total_pages=total_pages, current_page=current_page)

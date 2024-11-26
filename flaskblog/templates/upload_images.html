@@ -28,12 +28,12 @@
             {% for image in images %}
                 <article class="masonry__brick entry format-standard" data-aos="fade-up">
                 <div class="entry__thumb">
-                        <img src="{{image.image_bytes}}" alt="Post Image">
+                        <img src="{{image.image_url}}" alt="Post Image">
                 </div>
                 <div class="entry__text">
                     <div class="entry__header">
                         <div class="entry__date">
-                            <p>{{url_for('static', filename='post_pics/' + image.image_file) }}</p>
+                            <p>{{image.image_url}}</p>
                         </div>
                     </div>
                 </div>

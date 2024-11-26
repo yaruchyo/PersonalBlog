@@ -7,6 +7,7 @@ from flask_mail import Message
 from flaskblog import mail
 from io import BytesIO
 import base64
+import tempfile
 
 
 
@@ -36,6 +37,9 @@ def save_profile_picture(form_picture):
 
     return picture_fn
 
+FILEBASE_GATEWAY_URL = os.getenv("FILEBASE_GATEWAY_URL")
+def get_filebase_image_url(image_url_id):
+    return f"{FILEBASE_GATEWAY_URL}{image_url_id}"
 
 def save_blog_picture(form_picture):
     random_hex = secrets.token_hex(8)
@@ -45,6 +49,15 @@ def save_blog_picture(form_picture):
     i = Image.open(form_picture)
     i.save(picture_path)
     return picture_fn
+def store_file_to_temp_folder(form_picture, file_ext = ".png"):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=file_ext, mode="w") as temp_file:
+        filename = temp_file.name
+        i = Image.open(form_picture)
+        i.save(filename)
+        temp_file.flush()
+        temp_file.seek(0)
+        temp_file.close()
+    return filename
 
 def convert_picture_to_byte(form_picture):
     random_hex = secrets.token_hex(8)

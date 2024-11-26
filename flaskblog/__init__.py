@@ -4,7 +4,8 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flaskblog.config import ProductionConfig, DevelopmentConfig
 from dotenv import load_dotenv
-from tests.mongo_db import MongoDB
+from flaskblog.service_layer.database_repository.mongo_db import MongoDB
+from flaskblog.service_layer.storage_repository.filebase_service import FileBaseStorage
 import threading
 import time
 import requests
@@ -14,6 +15,7 @@ import os
 load_dotenv()
 db_name = "db_test"
 db = MongoDB(db_name)
+file_storage = FileBaseStorage()
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
@@ -56,10 +58,10 @@ def create_app(config_class=DevelopmentConfig):
     login_manager.init_app(app)
     mail.init_app(app)
 
-    from flaskblog.users.routes import users
-    from flaskblog.posts.routes import posts
-    from flaskblog.main.routes import main
-    from flaskblog.errors.handlers import errors
+    from flaskblog.routes_layer.users.routes import users
+    from flaskblog.routes_layer.posts.routes import posts
+    from flaskblog.routes_layer.main.routes import main
+    from flaskblog.routes_layer.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(posts)

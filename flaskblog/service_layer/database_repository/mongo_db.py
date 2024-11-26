@@ -104,7 +104,10 @@ class MongoDB:
 
     def get_max_id(self, collection_name: str, query: dict):
         max_id_doc = self.db[collection_name].find(query).sort("_id", -1).limit(1)
-        max_id = max_id_doc.next()["_id"] if max_id_doc.alive else None
+        if max_id_doc.retrieved>0:
+            max_id = max_id_doc.next()["_id"] if max_id_doc.alive else 0
+        else:
+            max_id = 0
         return max_id
 
     def close_connection(self):
