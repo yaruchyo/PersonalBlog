@@ -3,7 +3,7 @@
 ## EC2:
     source ./myenv/bin/activate
     nohup gunicorn run:app --bind 0.0.0.0:8080 &
-    sudo kill -9 $(sudo lsof -t -i:8080)
+    lsof -ti :8999 | xargs kill -9
 
 ## Quick Start - localy:
 
