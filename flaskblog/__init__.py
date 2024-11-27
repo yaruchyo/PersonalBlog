@@ -13,7 +13,7 @@ from flask_sslify import SSLify
 import os
 
 load_dotenv()
-db_name = "db_test"
+db_name = os.getenv("MONGO_DB_NAME")
 db = MongoDB(db_name)
 file_storage = FileBaseStorage()
 
