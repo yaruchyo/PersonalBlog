@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING
 from pymongo.errors import ConnectionFailure
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
@@ -65,6 +65,9 @@ class MongoDB:
         :return: List of matching documents.
         """
         return list(self.db[collection_name].find(query).limit(limit))
+    def find_sorted_documents(self, collection_name: str, query: dict, limit: int = 0, skip=0):
+
+        return list(self.db[collection_name].find(query).sort("date_posted", DESCENDING).skip(skip).limit(limit))
 
     def update_document(self, collection_name: str, query: dict, update_data: dict):
         """

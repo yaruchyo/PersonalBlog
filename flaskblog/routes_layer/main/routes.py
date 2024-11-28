@@ -8,7 +8,7 @@ main = Blueprint('main', __name__)
 @main.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    posts = Post.get_paginated_posts(1)
+    posts = Post.get_paginated_posts(page)
     posts = [{"id": post['_id'], **post} for i, post in enumerate(posts)]
     #todo work with multiple pages
     if not posts:

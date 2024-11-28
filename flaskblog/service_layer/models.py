@@ -104,10 +104,13 @@ class Post:
         self.image_filename=image_filename
         self.author = author.id  # store user id as reference
 
+    @staticmethod
     def get_paginated_posts(page: int, per_page: int = 20):
         # Order by `date_posted` in descending order, skip (page - 1) * per_page documents, and limit to `per_page`
-        results = db.find_documents("posts",{})
+        skip = (page - 1) * per_page
+        results = db.find_sorted_documents("posts", {}, per_page, skip)
         return list(results)
+
     def save(self):
         # Insert the post document into MongoDB
         db.insert_document('posts', self.__dict__)
@@ -127,5 +130,5 @@ class Images:
         db.insert_document('images', self.__dict__)
 
     def __repr__(self):
-        return f"Image('{self.image_file}', '{self.date_posted}')"
+        return f"Image('{self.image_filename}', '{self.date_posted}')"
 
