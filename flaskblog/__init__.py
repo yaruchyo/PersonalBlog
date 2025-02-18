@@ -62,11 +62,13 @@ def create_app(config_class=DevelopmentConfig):
     from flaskblog.routes_layer.posts.routes import posts
     from flaskblog.routes_layer.main.routes import main
     from flaskblog.routes_layer.errors.handlers import errors
+    from flaskblog.routes_layer.indexation.routes import indexation
 
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
     app.register_blueprint(errors)
+    app.register_blueprint(indexation)
 
     # if 'DYNO' in os.environ:
     #     sslify = SSLify(app)
