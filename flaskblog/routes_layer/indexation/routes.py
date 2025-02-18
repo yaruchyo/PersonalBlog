@@ -11,7 +11,7 @@ def sitemap():
     for post in posts:
         pages.append({
             'loc': f"https://www.aipetris.com/post/{post['id']}",
-            'lastmod': post['date_posted'],
+            'lastmod': post['date_posted'].strftime('%Y-%m-%d'),
             'priority': '1.0'
         })
 
