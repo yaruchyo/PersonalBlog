@@ -28,7 +28,14 @@
 
         <script src="{{ url_for('static', filename='js/modernizr.js') }}"></script>
         <script src="{{ url_for('static', filename='js/pace.min.js') }}"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-8EBPE741GH"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
 
+          gtag('config', 'G-8EBPE741GH');
+        </script>
 
 
         {% if title %}
@@ -37,6 +44,8 @@
             <title>Yaruchyk Blog</title>
         {% endif %}
     </head>
+        <!-- Google tag (gtag.js) -->
+
 
     <body id="top">
 
